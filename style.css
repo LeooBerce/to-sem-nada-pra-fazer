@@ -5,7 +5,6 @@
     --neon-green: #39ff14;
     --neon-magenta: #ff007f;
     --text-main: #e2e8f0;
-    --text-dim: #64748b;
     --border-glow: rgba(0, 240, 255, 0.25);
 }
 
@@ -351,7 +350,7 @@ input[type="number"]:focus {
     fill: transparent;
     stroke: var(--neon-green);
     stroke-width: 10;
-    stroke-dasharray: 502; /* 2 * PI * r (r=80) */
+    stroke-dasharray: 502;
     stroke-dashoffset: 502;
     stroke-linecap: round;
     transition: stroke-dashoffset 2s cubic-bezier(0.1, 0.8, 0.2, 1);
@@ -396,18 +395,4 @@ input[type="number"]:focus {
     padding: 1.25rem;
     font-size: 0.9rem;
     line-height: 1.6;
-}
-
-.history-panel h3 {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 0.5rem;
-}
-
-#history-list li {
-    font-size: 0.8rem;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
 }

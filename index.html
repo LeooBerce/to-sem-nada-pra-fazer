@@ -17,7 +17,7 @@
             <div class="scanner-line"></div>
             <h1 class="glitch-title" data-text="CORE_SCAN v2.6">CORE_SCAN v2.6</h1>
             <p class="subtitle">Inicialize o protocolo de escaneamento biométrico molecular anônimo. Descubra seu índice de eficiência biológica.</p>
-            <button class="btn-cyber" onclick="handleStartProtocol()">
+            <button class="btn-cyber" onclick="nextStep('welcome', 'biometrics')">
                 <span class="btn-text">INICIAR PROTOCOLO</span>
                 <span class="btn-glitch"></span>
             </button>
@@ -30,22 +30,22 @@
             
             <div class="input-container">
                 <label>IDADE <span class="unit">(anos)</span></label>
-                <input type="number" id="age" min="1" max="120" placeholder="00" oninput="playSound('keypress')">
+                <input type="number" id="age" min="1" max="120" placeholder="00">
             </div>
 
             <div class="input-container">
                 <label>MASSA CORPORAL <span class="unit">(kg)</span></label>
-                <input type="number" id="weight" min="1" max="300" placeholder="00.0" oninput="playSound('keypress')">
+                <input type="number" id="weight" min="1" max="300" placeholder="00.0">
             </div>
 
             <div class="input-container">
                 <label>ESTATURA <span class="unit">(cm)</span></label>
-                <input type="number" id="height" min="50" max="250" placeholder="000" oninput="playSound('keypress')">
+                <input type="number" id="height" min="50" max="250" placeholder="000">
             </div>
 
             <div class="btn-group">
-                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('biometrics', 'welcome')">VOLTAR</button>
-                <button class="btn-cyber" onclick="playSound('click'); validateBiometrics()">AVANÇAR</button>
+                <button class="btn-cyber btn-sec" onclick="nextStep('biometrics', 'welcome')">VOLTAR</button>
+                <button class="btn-cyber" onclick="validateBiometrics()">AVANÇAR</button>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
         <div id="step-sports" class="card">
             <div class="step-indicator">METRIC_DATA_02 // 03</div>
             <h2>PREFERÊNCIA CINÉTICA</h2>
-            <p class="card-desc">Selecione o vetor principal de queima energética e condicionamento físico:</p>
+            <p class="card-desc">Selecione o vetor principal de queima energética e conditioning físico:</p>
             
             <div class="cyber-options">
                 <div class="option-card" onclick="selectSport('cardio', this)">
@@ -79,8 +79,8 @@
             </div>
 
             <div class="btn-group">
-                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('sports', 'biometrics')">VOLTAR</button>
-                <button class="btn-cyber" onclick="playSound('click'); validateSport()">AVANÇAR</button>
+                <button class="btn-cyber btn-sec" onclick="nextStep('sports', 'biometrics')">VOLTAR</button>
+                <button class="btn-cyber" onclick="validateSport()">AVANÇAR</button>
             </div>
         </div>
 
@@ -114,7 +114,7 @@
             </div>
 
             <div class="btn-group">
-                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('frequency', 'sports')">VOLTAR</button>
+                <button class="btn-cyber btn-sec" onclick="nextStep('frequency', 'sports')">VOLTAR</button>
                 <button class="btn-cyber btn-pulse" onclick="runDataExtractionAnimation()">EXTRAIR DADOS</button>
             </div>
         </div>
@@ -158,12 +158,7 @@
                 <div class="matrix-content" id="feedback-tips"></div>
             </div>
 
-            <div class="history-panel">
-                <h3>📊 LOG DE REGISTROS ANTERIORES (ANÔNIMO)</h3>
-                <ul id="history-list"></ul>
-            </div>
-
-            <button class="btn-cyber" onclick="playSound('click'); restartQuiz()">REBOOT_SYSTEM</button>
+            <button class="btn-cyber" onclick="restartQuiz()">REBOOT_SYSTEM</button>
         </div>
     </div>
 

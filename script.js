@@ -3,69 +3,6 @@ let quizData = {
     selectedSport: null, selectedFrequency: null
 };
 
-// --- MOTOR DE ÁUDIO SINTÉTICO RESILIENTE ---
-let audioCtx = null;
-
-function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-}
-
-function playSound(type) {
-    // Se o audioContext não pôde ser ativado ou foi bloqueado, ignora silenciosamente sem travar o app
-    if (!audioCtx || audioCtx.state === 'suspended') return;
-    
-    try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        if (type === 'click') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-        } else if (type === 'keypress') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.03);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.03);
-        } else if (type === 'scan') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(130, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(750, audioCtx.currentTime + 2.5);
-            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2.5);
-            osc.start(); osc.stop(audioCtx.currentTime + 2.5);
-        } else if (type === 'success') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.12);
-            osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.24);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-        }
-    } catch (e) {
-        console.log("Audio render block issue bypassed.");
-    }
-}
-
-// Inicializador seguro do botão inicial que destrava o áudio
-function handleStartProtocol() {
-    initAudio();
-    playSound('click');
-    nextStep('welcome', 'biometrics');
-}
-
 // Inicializar partículas decorativas no plano de fundo
 function initBackgroundParticles() {
     const container = document.getElementById('bg-particles');
@@ -101,8 +38,8 @@ function validateBiometrics() {
     nextStep('biometrics', 'sports');
 }
 
+// Selecionar categoria de esporte
 function selectSport(sport, el) {
-    playSound('click');
     el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     quizData.selectedSport = sport;
@@ -116,27 +53,24 @@ function validateSport() {
     nextStep('sports', 'frequency');
 }
 
+// Selecionar frequência semanal
 function selectFrequency(freq, el) {
-    playSound('click');
     el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     quizData.selectedFrequency = freq;
 }
 
-// --- ANIMAÇÃO EXCLUSIVA DE EXTRAÇÃO DE DADOS (HOLOGRÁFICA) ---
+// --- ANIMAÇÃO HOLOGRÁFICA DE EXTRAÇÃO DE DADOS ---
 function runDataExtractionAnimation() {
     if (quizData.selectedFrequency === null) {
         alert('CRITICAL_ERROR: Selecione a frequência operacional.');
         return;
     }
 
-    initAudio();
-    playSound('scan');
-
     document.getElementById('step-frequency').classList.remove('active');
     document.getElementById('step-scanning').style.display = 'flex';
 
-    // Gerar as partículas subindo do corpo humano
+    // Gerar partículas subindo do corpo humano
     const partContainer = document.getElementById('data-particles');
     partContainer.innerHTML = '';
     for (let i = 0; i < 40; i++) {
@@ -147,7 +81,7 @@ function runDataExtractionAnimation() {
         partContainer.appendChild(chunk);
     }
 
-    // Terminal Logger Feed Fake Sci-Fi simulando a leitura de dados
+    // Logs técnicos correndo na tela
     const logs = [
         "Connecting to bio-receptors...",
         "Extracting mass indexes...",
@@ -164,11 +98,10 @@ function runDataExtractionAnimation() {
         setTimeout(() => {
             feed.innerHTML += `<div>> ${log}</div>`;
             feed.scrollTop = feed.scrollHeight;
-            playSound('keypress');
         }, index * 350);
     });
 
-    // Conclusão do escaneamento e apresentação final
+    // Avança para a tela de resultados após a animação acabar
     setTimeout(() => {
         document.getElementById('step-scanning').style.display = 'none';
         calculateResults();
@@ -191,7 +124,7 @@ function calculateResults() {
     let bonus = (quizData.selectedSport !== 'low' && quizData.selectedFrequency > 0) ? 10 : 0;
     let finalPercentage = Math.min(bmiScore + freqScore + bonus, 100);
 
-    // Animar o anel gráfico circular profissional
+    // Animar círculo de progresso
     const circle = document.getElementById('progress-bar-circle');
     const radius = circle.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
@@ -199,7 +132,7 @@ function calculateResults() {
     
     circle.style.strokeDashoffset = offset;
     
-    // Contador de numeração subindo dinamicamente
+    // Contador numérico de 0% até o valor final
     let currentPct = 0;
     const counterInterval = setInterval(() => {
         if (currentPct >= finalPercentage) {
@@ -210,7 +143,7 @@ function calculateResults() {
         }
     }, 15);
 
-    // Definição de Cores Neon para o resultado com base no nível
+    // Mudar cores neon conforme o nível atingido
     const statusBadge = document.getElementById('health-status');
     const neonGreen = '#39ff14';
     const neonCyan = '#00f0ff';
@@ -230,11 +163,8 @@ function calculateResults() {
         circle.style.stroke = neonMagenta;
     }
 
-    // Geração de Dicas Personalizadas
+    // Injetar os feedbacks customizados
     document.getElementById('feedback-tips').innerHTML = generateAdvancedTips(finalPercentage);
-    
-    playSound('success');
-    saveToHistory(finalPercentage, statusBadge.innerText);
     document.getElementById('step-result').classList.add('active');
 }
 
@@ -244,3 +174,21 @@ function generateAdvancedTips(pct) {
     } else if (pct >= 50) {
         return `<strong>Protocolo Nutricional:</strong> Reestruturação metabólica. Incremente o consumo hídrico basal diário (35ml/kg) e reduza xenobióticos (ultraprocessados).<br><br><strong>Planejamento Cinético:</strong> Incremente 1 ciclo semanal extra na modalidade escolhida para forçar adaptações cardiovasculares estáveis.`;
     } else {
+        return `<strong>Protocolo Nutricional:</strong> Choque anti-inflamatório. Redução agressiva de açúcares refinados e inserção obrigatória de micronutrientes folhosos em 100% das grandes refeições.<br><br><strong>Planejamento Cinético:</strong> Quebra do estado de inércia celular. Realize caminhadas diárias contínuas de 25 minutos em jejum ou pós-refeição.`;
+    }
+}
+
+function restartQuiz() {
+    quizData = { age: null, weight: null, height: null, selectedSport: null, selectedFrequency: null };
+    document.getElementById('age').value = '';
+    document.getElementById('weight').value = '';
+    document.getElementById('height').value = '';
+    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    
+    document.getElementById('step-result').classList.remove('active');
+    nextStep('result', 'welcome');
+}
+
+window.onload = () => {
+    initBackgroundParticles();
+};
