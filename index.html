@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIO-SCAN // Sistema de Análise Corporal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Partículas de fundo para efeito imersivo -->
+    <div class="bg-particles" id="bg-particles"></div>
+
+    <div class="scan-container">
+        <!-- ETAPA INICIAL -->
+        <div id="step-welcome" class="card active">
+            <div class="cyber-grid"></div>
+            <div class="scanner-line"></div>
+            <h1 class="glitch-title" data-text="CORE_SCAN v2.6">CORE_SCAN v2.6</h1>
+            <p class="subtitle">Inicialize o protocolo de escaneamento biométrico molecular anônimo. Descubra seu índice de eficiência biológica.</p>
+            <button class="btn-cyber" onclick="playSound('click'); nextStep('welcome', 'biometrics')">
+                <span class="btn-text">INICIAR PROTOCOLO</span>
+                <span class="btn-glitch"></span>
+            </button>
+        </div>
+
+        <!-- ETAPA 1: BIOMETRIA -->
+        <div id="step-biometrics" class="card">
+            <div class="step-indicator">METRIC_DATA_01 // 03</div>
+            <h2>DADOS CORPORAIS</h2>
+            
+            <div class="input-container">
+                <label>IDADE <span class="unit">(anos)</span></label>
+                <input type="number" id="age" min="1" max="120" placeholder="00" oninput="playSound('keypress')">
+            </div>
+
+            <div class="input-container">
+                <label>MASSA CORPORAL <span class="unit">(kg)</span></label>
+                <input type="number" id="weight" min="1" max="300" placeholder="00.0" oninput="playSound('keypress')">
+            </div>
+
+            <div class="input-container">
+                <label>ESTATURA <span class="unit">(cm)</span></label>
+                <input type="number" id="height" min="50" max="250" placeholder="000" oninput="playSound('keypress')">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('biometrics', 'welcome')">VOLTAR</button>
+                <button class="btn-cyber" onclick="playSound('click'); validateBiometrics()">AVANÇAR</button>
+            </div>
+        </div>
+
+        <!-- ETAPA 2: ESPORTES -->
+        <div id="step-sports" class="card">
+            <div class="step-indicator">METRIC_DATA_02 // 03</div>
+            <h2>PREFERÊNCIA CINÉTICA</h2>
+            <p class="card-desc">Selecione o vetor principal de queima energética e condicionamento físico:</p>
+            
+            <div class="cyber-options">
+                <div class="option-card" onclick="selectSport('cardio', this)">
+                    <div class="opt-accent"></div>
+                    <h3>CARDIO_VASCULAR</h3>
+                    <p>Corrida, Ciclismo, Natação de alta intensidade.</p>
+                </div>
+                <div class="option-card" onclick="selectSport('strength', this)">
+                    <div class="opt-accent"></div>
+                    <h3>FORÇA_HIPERTROFIA</h3>
+                    <p>Musculação, Crossfit, Calistenia pesada.</p>
+                </div>
+                <div class="option-card" onclick="selectSport('team', this)">
+                    <div class="opt-accent"></div>
+                    <h3>DINÂMICA_COLETIVA</h3>
+                    <p>Futebol, Vôlei, Basquete, Artes Marciais.</p>
+                </div>
+                <div class="option-card" onclick="selectSport('low', this)">
+                    <div class="opt-accent"></div>
+                    <h3>BAIXO_IMPACTO</h3>
+                    <p>Caminhadas breves ou regenerativas, Sedentarismo leve.</p>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('sports', 'biometrics')">VOLTAR</button>
+                <button class="btn-cyber" onclick="playSound('click'); validateSport()">AVANÇAR</button>
+            </div>
+        </div>
+
+        <!-- ETAPA 3: FREQUÊNCIA -->
+        <div id="step-frequency" class="card">
+            <div class="step-indicator">METRIC_DATA_03 // 03</div>
+            <h2>FREQUÊNCIA CRONOLÓGICA</h2>
+            <p class="card-desc">Quantos ciclos semanais são dedicados à ativação biológica ativa?</p>
+            
+            <div class="cyber-options">
+                <div class="option-card" onclick="selectFrequency(0, this)">
+                    <div class="opt-accent"></div>
+                    <h3>NÍVEL_ZERO</h3>
+                    <p>Sedentarismo total / Sem ativação regular.</p>
+                </div>
+                <div class="option-card" onclick="selectFrequency(1, this)">
+                    <div class="opt-accent"></div>
+                    <h3>CICLO_REDUZIDO</h3>
+                    <p>1 a 2 ativações por microciclo semanal.</p>
+                </div>
+                <div class="option-card" onclick="selectFrequency(3, this)">
+                    <div class="opt-accent"></div>
+                    <h3>CICLO_OTIMIZADO</h3>
+                    <p>3 a 4 ativações regulares na semana.</p>
+                </div>
+                <div class="option-card" onclick="selectFrequency(5, this)">
+                    <div class="opt-accent"></div>
+                    <h3>ALTA_PERFORMANCE</h3>
+                    <p>5 ou mais sessões severas de exercício.</p>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('frequency', 'sports')">VOLTAR</button>
+                <button class="btn-cyber btn-pulse" onclick="playSound('scan'); runDataExtractionAnimation()">EXTRAIR DADOS</button>
+            </div>
+        </div>
+
+        <!-- TELA DE ESCANEAMENTO ANIMAÇÃO HOLOGRÁFICA -->
+        <div id="step-scanning" class="card-scan">
+            <div class="holo-viewport">
+                <!-- Desenho vetorial estilizado do corpo humano holográfico -->
+                <svg class="human-hologram" viewBox="0 0 100 100" xmlns="http://w3.org">
+                    <circle cx="50" cy="15" r="6" class="holo-part" />
+                    <line x1="50" y1="21" x2="50" y2="55" class="holo-part" />
+                    <line x1="50" y1="30" x2="25" y2="45" class="holo-part" />
+                    <line x1="50" y1="30" x2="75" y2="45" class="holo-part" />
+                    <line x1="50" y1="55" x2="35" y2="90" class="holo-part" />
+                    <line x1="50" y1="55" x2="65" y2="90" class="holo-part" />
+                </svg>
+                <div class="laser-scanner"></div>
+                <div class="data-particles-container" id="data-particles"></div>
+            </div>
+            <h2 class="loading-text">EXTRAINDO DADOS BIO-MOLÉCULARES...</h2>
+            <div class="terminal-feed" id="terminal-feed"></div>
+        </div>
+
+        <!-- RESULTADO FINAL -->
+        <div id="step-result" class="card">
+            <div class="cyber-grid"></div>
+            <h2 class="result-title">RELATÓRIO DE EFICIÊNCIA BIOLÓGICA</h2>
+            
+            <div class="radial-progress-box">
+                <svg class="progress-ring-svg" width="180" height="180">
+                    <circle class="progress-ring-bg" cx="90" cy="90" r="80"/>
+                    <circle class="progress-ring-bar" id="progress-bar-circle" cx="90" cy="90" r="80"/>
+                </svg>
+                <div class="percentage-display" id="percentage-val">0%</div>
+            </div>
+
+            <div class="status-badge" id="health-status">--</div>
+            
+            <div class="matrix-box">
+                <div class="matrix-header">📋 DIRETRIZES DE OTIMIZAÇÃO_</div>
+                <div class="matrix-content" id="feedback-tips"></div>
+            </div>
+
+            <div class="history-panel">
+                <h3>📊 LOG DE REGISTROS ANTERIORES (ANÔNIMO)</h3>
+                <ul id="history-list"></ul>
+            </div>
+
+            <button class="btn-cyber" onclick="playSound('click'); restartQuiz()">REBOOT_SYSTEM</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
