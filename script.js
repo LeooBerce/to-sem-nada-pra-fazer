@@ -3,107 +3,112 @@ let quizData = {
     selectedSport: null, selectedFrequency: null
 };
 
-// Inicializar partículas decorativas no plano de fundo
+// Gerador de partículas de fundo
 function initBackgroundParticles() {
     const container = document.getElementById('bg-particles');
     if (!container) return;
     container.innerHTML = '';
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 20; i++) {
         const p = document.createElement('div');
         p.classList.add('particle');
         p.style.left = `${Math.random() * 100}vw`;
-        p.style.width = p.style.height = `${Math.random() * 4 + 2}px`;
-        p.style.animationDelay = `${Math.random() * 7}s`;
+        p.style.width = p.style.height = `${Math.random() * 3 + 2}px`;
+        p.style.animationDelay = `${Math.random() * 6}s`;
         p.style.animationDuration = `${Math.random() * 5 + 6}s`;
         container.appendChild(p);
     }
 }
 
-// Navegação entre cartões
+// Controle de Navegação das Etapas
 function nextStep(current, next) {
     document.getElementById(`step-${current}`).classList.remove('active');
     document.getElementById(`step-${next}`).classList.add('active');
 }
 
+// Validador de dados corporais
 function validateBiometrics() {
     const age = parseInt(document.getElementById('age').value);
     const weight = parseFloat(document.getElementById('weight').value);
     const height = parseFloat(document.getElementById('height').value);
 
     if (!age || !weight || !height || age <= 0 || weight <= 0 || height <= 0) {
-        alert('CRITICAL_ERROR: Dados corporais inconsistentes ou ausentes.');
+        alert('CRITICAL_ERROR: Parâmetros corporais inválidos.');
         return;
     }
     quizData.age = age; quizData.weight = weight; quizData.height = height;
     nextStep('biometrics', 'sports');
 }
 
-// Selecionar categoria de esporte
+// Seleção de Esportes e Frequência
 function selectSport(sport, el) {
-    el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.parentElement.querySelectorAll('.premium-option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     quizData.selectedSport = sport;
 }
 
 function validateSport() {
     if (!quizData.selectedSport) {
-        alert('CRITICAL_ERROR: Selecione um vetor operacional.');
+        alert('CRITICAL_ERROR: Selecione uma preferência cinética.');
         return;
     }
     nextStep('sports', 'frequency');
 }
 
-// Selecionar frequência semanal
 function selectFrequency(freq, el) {
-    el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.parentElement.querySelectorAll('.premium-option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     quizData.selectedFrequency = freq;
 }
 
-// --- ANIMAÇÃO HOLOGRÁFICA DE EXTRAÇÃO DE DADOS ---
+// --- ENGINE DE ANIMAÇÃO HOLOGRÁFICA DO CORPO ---
 function runDataExtractionAnimation() {
     if (quizData.selectedFrequency === null) {
-        alert('CRITICAL_ERROR: Selecione a frequência operacional.');
+        alert('CRITICAL_ERROR: Frequência operacional não selecionada.');
         return;
     }
 
     document.getElementById('step-frequency').classList.remove('active');
-    document.getElementById('step-scanning').style.display = 'flex';
+    
+    const scanStep = document.getElementById('step-scanning');
+    scanStep.style.display = 'flex';
+    // Pequeno delay para forçar a renderização do display flex antes da animação
+    setTimeout(() => { scanStep.classList.add('active'); }, 50);
 
-    // Gerar partículas subindo do corpo humano
+    // Gerar as partículas dentro do holograma
     const partContainer = document.getElementById('data-particles');
     partContainer.innerHTML = '';
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 35; i++) {
         const chunk = document.createElement('div');
         chunk.classList.add('data-chunk');
-        chunk.style.left = `${Math.random() * 60 + 20}%`;
-        chunk.style.animationDelay = `${Math.random() * 1.5}s`;
+        chunk.style.left = `${Math.random() * 50 + 25}%`;
+        chunk.style.animationDelay = `${Math.random() * 1.2}s`;
         partContainer.appendChild(chunk);
     }
 
-    // Logs técnicos correndo na tela
+    // Gerador de logs do terminal
     const logs = [
-        "Connecting to bio-receptors...",
-        "Extracting mass indexes...",
-        "Analyzing kinetic profile: " + quizData.selectedSport.toUpperCase(),
-        "Compiling chronological variables...",
-        "Calculating metabolic efficiency...",
-        "De-identifying final data logs...",
-        "SUCCESS: Bio-Report ready."
+        "Estabilizando canal de conexão molecular...",
+        "Calculando densidade e índices de massa corpórea...",
+        "Mapeando perfil dinâmico cinético: " + quizData.selectedSport.toUpperCase(),
+        "Interpretando variáveis de frequência cronológica...",
+        "Processando modelo de eficiência adaptativa...",
+        "De-identificando logs para total confidencialidade...",
+        "SUCESSO: Relatório gerado com integridade."
     ];
     
     const feed = document.getElementById('terminal-feed');
     feed.innerHTML = '';
     logs.forEach((log, index) => {
         setTimeout(() => {
-            feed.innerHTML += `<div>> ${log}</div>`;
+            feed.innerHTML += `<div>[SYSTEM] ${log}</div>`;
             feed.scrollTop = feed.scrollHeight;
         }, index * 350);
     });
 
-    // Avança para a tela de resultados após a animação acabar
+    // Encerrar animação e calcular
     setTimeout(() => {
-        document.getElementById('step-scanning').style.display = 'none';
+        scanStep.style.display = 'none';
+        scanStep.classList.remove('active');
         calculateResults();
     }, 2800);
 }
@@ -124,7 +129,7 @@ function calculateResults() {
     let bonus = (quizData.selectedSport !== 'low' && quizData.selectedFrequency > 0) ? 10 : 0;
     let finalPercentage = Math.min(bmiScore + freqScore + bonus, 100);
 
-    // Animar círculo de progresso
+    // Ajuste dinâmico do anel gráfico circular
     const circle = document.getElementById('progress-bar-circle');
     const radius = circle.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
@@ -132,7 +137,7 @@ function calculateResults() {
     
     circle.style.strokeDashoffset = offset;
     
-    // Contador numérico de 0% até o valor final
+    // Contador numérico central
     let currentPct = 0;
     const counterInterval = setInterval(() => {
         if (currentPct >= finalPercentage) {
@@ -143,38 +148,37 @@ function calculateResults() {
         }
     }, 15);
 
-    // Mudar cores neon conforme o nível atingido
+    // Atualização de cores com base no resultado
     const statusBadge = document.getElementById('health-status');
-    const neonGreen = '#39ff14';
+    const neonEmerald = '#10b981';
     const neonCyan = '#00f0ff';
-    const neonMagenta = '#ff007f';
+    const neonRose = '#f43f5e';
 
     if (finalPercentage >= 80) {
-        statusBadge.innerText = "NÍVEL: ALTA EFICIÊNCIA BIOLÓGICA (ÓTIMO)";
-        statusBadge.style.color = neonGreen;
-        circle.style.stroke = neonGreen;
+        statusBadge.innerText = "SINAL BIO-EFICIENTE // EXCELENTE";
+        statusBadge.style.color = neonEmerald;
+        circle.style.stroke = neonEmerald;
     } else if (finalPercentage >= 50) {
-        statusBadge.innerText = "NÍVEL: ADAPTAÇÃO INTERMEDIÁRIA (MODERADO)";
+        statusBadge.innerText = "SINAL EM ADAPTAÇÃO // MODERADO";
         statusBadge.style.color = neonCyan;
         circle.style.stroke = neonCyan;
     } else {
-        statusBadge.innerText = "NÍVEL: CRÍTICO // ENGENHARIA DE HÁBITOS REQUERIDA";
-        statusBadge.style.color = neonMagenta;
-        circle.style.stroke = neonMagenta;
+        statusBadge.innerText = "ALERTA DE EFICIÊNCIA // REESTRUTURAÇÃO REQUERIDA";
+        statusBadge.style.color = neonRose;
+        circle.style.stroke = neonRose;
     }
 
-    // Injetar os feedbacks customizados
     document.getElementById('feedback-tips').innerHTML = generateAdvancedTips(finalPercentage);
     document.getElementById('step-result').classList.add('active');
 }
 
 function generateAdvancedTips(pct) {
     if (pct >= 80) {
-        return `<strong>Protocolo Nutricional:</strong> Balanço normocalórico. Priorize proteínas magras de alta absorção e carboidratos de baixo índice glicêmico para sustentar glicogênio.<br><br><strong>Planejamento Cinético:</strong> Mantenha a periodização atual e aplique técnicas de sobrecarga progressiva para quebrar platôs adaptativos.`;
+        return `<strong>Diretriz Nutricional:</strong> Mantenha um balanço normocalórico balanceado. Priorize fontes de proteínas limpas de alto valor biológico e gorduras insaturadas.<br><br><strong>Planejamento Físico:</strong> Sustente a consistência atual. Recomenda-se introduzir estratégias de microciclos de força e choque metabólico para manter o corpo em evolução contínua.`;
     } else if (pct >= 50) {
-        return `<strong>Protocolo Nutricional:</strong> Reestruturação metabólica. Incremente o consumo hídrico basal diário (35ml/kg) e reduza xenobióticos (ultraprocessados).<br><br><strong>Planejamento Cinético:</strong> Incremente 1 ciclo semanal extra na modalidade escolhida para forçar adaptações cardiovasculares estáveis.`;
+        return `<strong>Diretriz Nutricional:</strong> Correção metabólica ativa. Otimize sua hidratação basal para 35ml por quilograma e elimine alimentos ultraprocessados da rotina semanal.<br><br><strong>Planejamento Físico:</strong> Expanda sua frequência operacional adicionando um dia extra na semana dedicado à modalidade escolhida para consolidar adaptações fisiológicas profundas.`;
     } else {
-        return `<strong>Protocolo Nutricional:</strong> Choque anti-inflamatório. Redução agressiva de açúcares refinados e inserção obrigatória de micronutrientes folhosos em 100% das grandes refeições.<br><br><strong>Planejamento Cinético:</strong> Quebra do estado de inércia celular. Realize caminhadas diárias contínuas de 25 minutos em jejum ou pós-refeição.`;
+        return `<strong>Diretriz Nutricional:</strong> Protocolo anti-inflamatório emergencial. Restrinja carboidratos refinados e insira vegetais folhosos e fibras de forma obrigatória em suas refeições principais.<br><br><strong>Planejamento Físico:</strong> Reversão imediata do quadro de inércia celular. Implemente sessões curtas e diárias de caminhadas aceleradas (25 min) ou pequenos circuitos funcionais estruturados para ativar o metabolismo.`;
     }
 }
 
@@ -183,7 +187,7 @@ function restartQuiz() {
     document.getElementById('age').value = '';
     document.getElementById('weight').value = '';
     document.getElementById('height').value = '';
-    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.premium-option-card').forEach(c => c.classList.remove('selected'));
     
     document.getElementById('step-result').classList.remove('active');
     nextStep('result', 'welcome');
