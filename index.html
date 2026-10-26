@@ -17,7 +17,7 @@
             <div class="scanner-line"></div>
             <h1 class="glitch-title" data-text="CORE_SCAN v2.6">CORE_SCAN v2.6</h1>
             <p class="subtitle">Inicialize o protocolo de escaneamento biométrico molecular anônimo. Descubra seu índice de eficiência biológica.</p>
-            <button class="btn-cyber" onclick="playSound('click'); nextStep('welcome', 'biometrics')">
+            <button class="btn-cyber" onclick="handleStartProtocol()">
                 <span class="btn-text">INICIAR PROTOCOLO</span>
                 <span class="btn-glitch"></span>
             </button>
@@ -115,7 +115,7 @@
 
             <div class="btn-group">
                 <button class="btn-cyber btn-sec" onclick="playSound('click'); nextStep('frequency', 'sports')">VOLTAR</button>
-                <button class="btn-cyber btn-pulse" onclick="playSound('scan'); runDataExtractionAnimation()">EXTRAIR DADOS</button>
+                <button class="btn-cyber btn-pulse" onclick="runDataExtractionAnimation()">EXTRAIR DADOS</button>
             </div>
         </div>
 
